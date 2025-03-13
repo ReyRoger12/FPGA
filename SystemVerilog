@@ -1,106 +1,75 @@
-module operaciones_aritmeticas (
-    input clk,                    // Reloj
-    input reset,                  // Reset
-    input [7:0] M,                // Selector de operación
-    input [31:0] A,               // Operando A
-    input [31:0] B,               // Operando B
-    output reg [31:0] resultado   // Resultado de la operación
+module math_leds(
+    input clk, reset,
+    input [3:0] a, b,
+    input [3:0] op_select, // Selector de operación
+    output reg [5:0] leds
 );
-
-    // Definición de las operaciones
+    
     always @(posedge clk or posedge reset) begin
         if (reset) begin
-            resultado <= 32'b0;  // Reset al valor 0
+            leds <= 6'b0;
         end else begin
-            case (M)
-                8'd0: resultado <= A + B;        // Suma
-                8'd1: resultado <= A - B;        // Resta A - B
-                8'd2: resultado <= B - A;        // Resta B - A
-                8'd3: resultado <= A & B;        // AND
-                8'd4: resultado <= A | B;        // OR
-                8'd5: resultado <= A ^ B;        // XOR
-                8'd6: resultado <= ~A;           // NOT A
-                8'd7: resultado <= ~B;           // NOT B
-                8'd8: resultado <= A * B;        // Multiplicación
-                8'd9: resultado <= A / B;        // División
-                8'd10: resultado <= A << 1;      // Desplazamiento a la izquierda
-                8'd14: resultado <= fibonacci(A); // Fibonacci
-                8'd15: resultado <= factorial(A); // Factorial
-                8'd16: resultado <= potencia(A, B); // A^B
-                8'd17: resultado <= A % B;        // Módulo
-                8'd18: resultado <= raiz(A);       // Raíz cuadrada de A
-                default: resultado <= 32'b0;      // Operación por defecto
+            case (op_select)
+                4'b0000: leds <= a + b;            // Suma A + B
+                4'b0001: leds <= a - b;            // Resta A - B
+                4'b0010: leds <= b - a;            // Resta B - A
+                4'b0011: leds <= a & b;            // A AND B
+                4'b0100: leds <= a | b;            // A OR B
+                4'b0101: leds <= a ^ b;            // A XOR B
+                4'b0110: leds <= ~a;               // NOT A
+                4'b0111: leds <= ~b;               // NOT B
+                4'b1000: leds <= a * b;            // Multiplicación
+                4'b1001: leds <= (b != 0) ? a / b : 6'b0; // División (evita división entre 0)
+                4'b1010: leds <= a << 1;           // Desplazamiento a la izquierda
+                4'b1011: leds <= a ** 2;           // Potencia de A al cuadrado
+                4'b1100: leds <= (b != 0) ? a % b : 6'b0; // Módulo de A % B
+                4'b1101: leds <= sqrt(a);          // Raíz cuadrada de A (aproximada)
+                4'b1110: leds <= fibonacci(a);     // Fibonacci de A
+                4'b1111: leds <= factorial(a[2:0]); // Factorial de A (solo 3 bits)
+                default: leds <= 6'b0;
             endcase
         end
     end
-
-    // Función de Fibonacci
-// Función de Fibonacci
-function [31:0] fibonacci;
-    input [31:0] n;
-    integer i;
-    reg [31:0] a, b, temp;
-    begin
-        a = 0;
-        b = 1;
- 
-        begin    
-        for (i = 0; i < 1000; i = i + 1) 
-            temp = a + b;
-            a = b;
-            b = temp;
-        end
-        fibonacci = a; // Asignación correcta al valor de retorno
-    end
-endfunction
-
-    // Función de Factorial
-    function [31:0] factorial;
-        input [31:0] n;
+    
+    // Función para calcular la raíz cuadrada (búsqueda simple)
+    function [5:0] sqrt;
+        input [3:0] num;
         integer i;
-        reg [31:0] result;
         begin
-            result = 1;
-            begin
-            for (i = 1; i < 1000; i = i + 1)
-                result = result * i;
+            sqrt = 0;
+            for (i = 0; i * i <= num; i = i + 1) begin
+                sqrt = i;
             end
-      factorial = result;
-    end
-    endfunction
-
-    // Función de Potencia
-    function [31:0] potencia;
-        input [31:0] base, exponente;
-        integer i;
-        reg [31:0] result;
-        begin
-            result = 1;
-            exponente = 5;
-            begin
-            for (i = 0; i < exponente; i = i + 1) 
-                result = result * base;
-            end
-            potencia = result;
         end
     endfunction
-
-    // Función de Raíz Cuadrada (aproximación simple)
-    function [31:0] raiz;
-        input [31:0] n;
+    
+    // Función para calcular el Fibonacci de A
+    function [5:0] fibonacci;
+        input [3:0] num;
         integer i;
-        reg [31:0] res;
+        reg [5:0] f0, f1, f2;
         begin
-            res = 0;
-            begin
-            for (i = 0; i < 1000; i = i + 1) 
-                if (i * i > n) begin
-                    res = i - 1;
-                    
-                end
+            f0 = 0;
+            f1 = 1;
+            for (i = 2; i <= num; i = i + 1) begin
+                f2 = f0 + f1;
+                f0 = f1;
+                f1 = f2;
             end
-            raiz = res;
+            fibonacci = (num == 0) ? 0 : (num == 1) ? 1 : f1;
         end
     endfunction
-
+    
+    // Función para calcular el factorial de A (limitado a 3 bits)
+    function [5:0] factorial;
+        input [2:0] num;
+        integer i;
+        begin
+            factorial = 1;
+            for (i = 1; i <= num; i = i + 1) begin
+                factorial = factorial * i;
+            end
+        end
+    endfunction
+    
 endmodule
