@@ -34,22 +34,24 @@ module operaciones_aritmeticas (
         end
     end
 
-    // Función de Fibonacci
-    function [31:0] fibonacci;
-        input [31:0] n;
-        integer i;
-        reg [31:0] a, b, temp;
-        begin
-            a = 0;
-            b = 1;
-            for (i = 0; i < n; i = i + 1) begin
-                temp = a + b;
-                a = b;
-                b = temp;
-            end
-            fibonacci = a;
+
+// Función de Fibonacci
+function [31:0] fibonacci;
+    input [31:0] n;
+    integer i;
+    reg [31:0] a, b, temp;
+    begin
+        a = 0;
+        b = 1;
+        for (i = 0; i < n; i = i + 1) begin
+            temp = a + b;
+            a = b;
+            b = temp;
         end
-    endfunction
+        fibonacci = a; // Asignación correcta al valor de retorno
+    end
+endfunction
+
 
     // Función de Factorial
     function [31:0] factorial;
