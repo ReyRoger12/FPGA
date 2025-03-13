@@ -1,0 +1,82 @@
+module ALU_Controller;
+    import "DPI-C" function int $fopen(string);
+    import "DPI-C" function int $fscanf(int, string, output int);
+    import "DPI-C" function void $fclose(int);
+
+    logic [31:0] A, B, Result;
+    logic [4:0]  M;
+    int file, status;
+    
+    initial begin
+        file = $fopen("Comandos.txt", "r");
+        if (file == 0) begin
+            $display("Error: No se pudo abrir el archivo");
+            $finish;
+        end
+        
+        while (!$feof(file)) begin
+            status = $fscanf(file, "%d %d %d", M, A, B);
+            if (status != 3) break;
+            
+            case (M)
+                0:  Result = A + B;
+                1:  Result = A - B;
+                2:  Result = B - A;
+                3:  Result = A & B;
+                4:  Result = A | B;
+                5:  Result = A ^ B;
+                6:  Result = ~A;
+                7:  Result = ~B;
+                8:  Result = A * B;
+                9:  Result = B != 0 ? A / B : 32'hFFFFFFFF;
+                10: Result = A << 1;
+                14: Result = fibonacci(A);
+                15: Result = factorial(A);
+                16: Result = potencia(A, B);
+                17: Result = B != 0 ? A % B : 0;
+                18: Result = raiz(A);
+                default: Result = 32'hDEADBEEF;
+            endcase
+            
+            $display("M=%d, A=%d, B=%d -> Resultado=%d", M, A, B, Result);
+        end
+        
+        $fclose(file);
+        $finish;
+    end
+    
+    function automatic logic [31:0] fibonacci(input logic [31:0] n);
+        logic [31:0] a = 0, b = 1, temp;
+        if (n == 0) return 0;
+        for (int i = 2; i <= n; i++) begin
+            temp = a + b;
+            a = b;
+            b = temp;
+        end
+        return b;
+    endfunction
+    
+    function automatic logic [31:0] factorial(input logic [31:0] n);
+        logic [31:0] result = 1;
+        for (int i = 2; i <= n; i++)
+            result *= i;
+        return result;
+    endfunction
+    
+    function automatic logic [31:0] potencia(input logic [31:0] base, input logic [31:0] exp);
+        logic [31:0] result = 1;
+        for (int i = 0; i < exp; i++)
+            result *= base;
+        return result;
+    endfunction
+    
+    function automatic logic [31:0] raiz(input logic [31:0] n);
+        logic [31:0] res = 0, odd = 1;
+        while (n >= odd) begin
+            n -= odd;
+            odd += 2;
+            res++;
+        end
+        return res;
+    endfunction
+endmodule
