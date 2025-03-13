@@ -1,2 +1,11 @@
-ERROR (EX3349) : Multiple statement function/task without begin/end not supported in this mode of Verilog("C:\Gowin\Gowin_V1.9.9.02_x64\IDE\bin\Documents\MENU\src\MENU_OPCIONES.v":71)
-ERROR (EX3928) : Module 'operaciones_aritmeticas' is ignored due to previous errors("C:\Gowin\Gowin_V1.9.9.02_x64\IDE\bin\Documents\MENU\src\MENU_OPCIONES.v":104)
+module memoria_ram (
+    input clk,
+    input reset,
+    output reg [31:0] instr_mem [0:255] // Memoria de instrucciones (256 palabras de 32 bits)
+);
+    
+    initial begin
+        $readmemh("codigo_maquina.txt", instr_mem); // Cargar desde archivo en formato hexadecimal
+    end
+
+endmodule
