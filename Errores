@@ -1,2 +1,23 @@
-ERROR (EX3934) : Loop count limit of 2000 exceeded, condition is never false("C:\Gowin\Gowin_V1.9.9.02_x64\IDE\bin\Documents\MENU\src\MENU_OPCIONES.v":46)
-WARN  (EX2933) : Function 'fibonacci' has no return value assignment("C:\Gowin\Gowin_V1.9.9.02_x64\IDE\bin\Documents\MENU\src\MENU_OPCIONES.v":39)
+// Función de Fibonacci
+function [31:0] fibonacci;
+    input [31:0] n;
+    integer i;
+    reg [31:0] a, b, temp;
+    begin
+        // Comprobación básica para n = 0
+        if (n == 0) begin
+            fibonacci = 0; // Fibonacci(0) es 0
+        end else if (n == 1) begin
+            fibonacci = 1; // Fibonacci(1) es 1
+        end else begin
+            a = 0;
+            b = 1;
+            for (i = 2; i <= n; i = i + 1) begin // Comenzamos desde i=2
+                temp = a + b;
+                a = b;
+                b = temp;
+            end
+            fibonacci = a; // Asignamos el resultado de Fibonacci(n)
+        end
+    end
+endfunction
