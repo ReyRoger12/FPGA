@@ -1,16 +1,8 @@
-module sum_leds(input clk, reset, [3:0] a, b,
-    output  [5:0] leds
+module dip_switch_led (
+    input [7:0] dip_switch,   // Entrada de los 8 dip switches
+    output [7:0] led          // Salida de los 8 LEDs
 );
-    reg [5:0] sum;
-    begin
-    always @(posedge clk or posedge reset) 
-        if (reset)
-            sum <= 6'b0;
-        else
-            sum <= a + b;
-    end
     
-    assign leds = sum;
+    assign led = dip_switch;   // Los LEDs reflejan directamente el valor de los dip switches
     
 endmodule
-
