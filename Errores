@@ -1,3 +1,32 @@
-ERROR (EX3828) : External reference 'return' remains unresolved, please declare "return" before using this external reference("C:\Gowin\Gowin_V1.9.9.02_x64\IDE\bin\Documents\MENU\src\MENU_OPCIONES.v":59)
-
-
+// Función de Fibonacci
+function [31:0] fibonacci;
+    input [31:0] n;
+    integer i;
+    reg [31:0] a, b, temp;
+    reg [31:0] max_iterations;
+    begin
+        // Verificación de valor de n
+        if (n == 0) begin
+            fibonacci = 0; // Fibonacci(0) es 0
+        end else if (n == 1) begin
+            fibonacci = 1; // Fibonacci(1) es 1
+        end else if (n > 32'h7FFFFFFF) begin
+            fibonacci = 32'bx; // Evitar valores demasiado grandes, se devuelve un valor indeterminado
+        end else begin
+            a = 0;
+            b = 1;
+            max_iterations = 2000; // Limitar el número de iteraciones
+            for (i = 2; i <= n; i = i + 1) begin
+                if (i > max_iterations) begin
+                    fibonacci = 32'bx; // Si el número de iteraciones excede el límite, asignamos un valor indeterminado
+                    // Ya no se continúa el ciclo ni se ejecuta más código
+                end else begin
+                    temp = a + b;
+                    a = b;
+                    b = temp;
+                end
+            end
+            fibonacci = a; // Asignamos el resultado de Fibonacci(n)
+        end
+    end
+endfunction
