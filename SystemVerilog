@@ -34,7 +34,7 @@ module operaciones_aritmeticas (
         end
     end
 
-
+    // Función de Fibonacci
 // Función de Fibonacci
 function [31:0] fibonacci;
     input [31:0] n;
@@ -43,7 +43,9 @@ function [31:0] fibonacci;
     begin
         a = 0;
         b = 1;
-        for (i = 0; i < n; i = i + 1) begin
+ 
+        begin    
+        for (i = 0; i < 1000; i = i + 1) 
             temp = a + b;
             a = b;
             b = temp;
@@ -52,7 +54,6 @@ function [31:0] fibonacci;
     end
 endfunction
 
-
     // Función de Factorial
     function [31:0] factorial;
         input [31:0] n;
@@ -60,11 +61,12 @@ endfunction
         reg [31:0] result;
         begin
             result = 1;
-            for (i = 1; i <= n; i = i + 1) begin
+            begin
+            for (i = 1; i < 1000; i = i + 1)
                 result = result * i;
             end
-            factorial = result;
-        end
+      factorial = result;
+    end
     endfunction
 
     // Función de Potencia
@@ -74,7 +76,9 @@ endfunction
         reg [31:0] result;
         begin
             result = 1;
-            for (i = 0; i < exponente; i = i + 1) begin
+            exponente = 5;
+            begin
+            for (i = 0; i < exponente; i = i + 1) 
                 result = result * base;
             end
             potencia = result;
@@ -88,10 +92,11 @@ endfunction
         reg [31:0] res;
         begin
             res = 0;
-            for (i = 0; i < n; i = i + 1) begin
+            begin
+            for (i = 0; i < 1000; i = i + 1) 
                 if (i * i > n) begin
                     res = i - 1;
-                    break;
+                    
                 end
             end
             raiz = res;
@@ -99,7 +104,3 @@ endfunction
     endfunction
 
 endmodule
-
-
-endmodule
-
