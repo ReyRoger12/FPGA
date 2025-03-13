@@ -3,18 +3,24 @@ function [31:0] fibonacci;
     input [31:0] n;
     integer i;
     reg [31:0] a, b, temp;
+    reg [31:0] max_iterations;
     begin
-        // Comprobación básica para n < 0
-        if (n < 0) begin
-            fibonacci = 32'bx; // Valor indeterminado en caso de entrada negativa
-        end else if (n == 0) begin
+        // Verificación de valor de n
+        if (n == 0) begin
             fibonacci = 0; // Fibonacci(0) es 0
         end else if (n == 1) begin
             fibonacci = 1; // Fibonacci(1) es 1
+        end else if (n > 32'h7FFFFFFF) begin
+            fibonacci = 32'bx; // Evitar valores demasiado grandes, se devuelve un valor indeterminado
         end else begin
             a = 0;
             b = 1;
-            for (i = 2; i <= n; i = i + 1) begin // Comenzamos desde i=2
+            max_iterations = 2000; // Limitar el número de iteraciones, si se excede, no ejecutamos el ciclo
+            for (i = 2; i <= n; i = i + 1) begin
+                if (i > max_iterations) begin
+                    fibonacci = 32'bx; // Si el número de iteraciones excede el límite, asignamos un valor indeterminado
+                    return; // Salir de la función
+                end
                 temp = a + b;
                 a = b;
                 b = temp;
@@ -23,3 +29,4 @@ function [31:0] fibonacci;
         end
     end
 endfunction
+
