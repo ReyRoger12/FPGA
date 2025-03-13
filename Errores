@@ -1,75 +1,16 @@
-module math_leds(
-    input clk, reset,
-    input [3:0] a, b,
-    input [3:0] op_select, // Selector de operación
-    output reg [5:0] leds
+module sum_leds(input clk, reset, [3:0] a, b,
+    output  [5:0] leds
 );
-    
-    always @(posedge clk or posedge reset) begin
-        if (reset) begin
-            leds <= 6'b0;
-        end else begin
-            case (op_select)
-                4'b0000: leds <= a + b;            // Suma A + B
-                4'b0001: leds <= a - b;            // Resta A - B
-                4'b0010: leds <= b - a;            // Resta B - A
-                4'b0011: leds <= a & b;            // A AND B
-                4'b0100: leds <= a | b;            // A OR B
-                4'b0101: leds <= a ^ b;            // A XOR B
-                4'b0110: leds <= ~a;               // NOT A
-                4'b0111: leds <= ~b;               // NOT B
-                4'b1000: leds <= a * b;            // Multiplicación
-                4'b1001: leds <= (b != 0) ? a / b : 6'b0; // División (evita división entre 0)
-                4'b1010: leds <= a << 1;           // Desplazamiento a la izquierda
-                4'b1011: leds <= a ** 2;           // Potencia de A al cuadrado
-                4'b1100: leds <= (b != 0) ? a % b : 6'b0; // Módulo de A % B
-                4'b1101: leds <= sqrt(a);          // Raíz cuadrada de A (aproximada)
-                4'b1110: leds <= fibonacci(a);     // Fibonacci de A
-                4'b1111: leds <= factorial(a[2:0]); // Factorial de A (solo 3 bits)
-                default: leds <= 6'b0;
-            endcase
-        end
+    reg [5:0] sum;
+    begin
+    always @(posedge clk or posedge reset) 
+        if (reset)
+            sum <= 6'b0;
+        else
+            sum <= a + b;
     end
     
-    // Función para calcular la raíz cuadrada (búsqueda simple)
-    function [5:0] sqrt;
-        input [3:0] num;
-        integer i;
-        begin
-            sqrt = 0;
-            for (i = 0; i * i <= num; i = i + 1) begin
-                sqrt = i;
-            end
-        end
-    endfunction
-    
-    // Función para calcular el Fibonacci de A
-    function [5:0] fibonacci;
-        input [3:0] num;
-        integer i;
-        reg [5:0] f0, f1, f2;
-        begin
-            f0 = 0;
-            f1 = 1;
-            for (i = 2; i <= num; i = i + 1) begin
-                f2 = f0 + f1;
-                f0 = f1;
-                f1 = f2;
-            end
-            fibonacci = (num == 0) ? 0 : (num == 1) ? 1 : f1;
-        end
-    endfunction
-    
-    // Función para calcular el factorial de A (limitado a 3 bits)
-    function [5:0] factorial;
-        input [2:0] num;
-        integer i;
-        begin
-            factorial = 1;
-            for (i = 1; i <= num; i = i + 1) begin
-                factorial = factorial * i;
-            end
-        end
-    endfunction
+    assign leds = sum;
     
 endmodule
+
