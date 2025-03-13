@@ -1,11 +1,9 @@
-module sum_leds(
-    input logic clk, reset,
-    input logic [3:0] a, b,
-    output logic [5:0] leds
+module sum_leds(input clk, reset, [3:0] a, b,
+    output  [5:0] leds
 );
-    logic [5:0] sum;
-    
-    always_ff @(posedge clk or posedge reset) begin
+    reg [5:0] sum;
+    begin
+    always @(posedge clk or posedge reset) 
         if (reset)
             sum <= 6'b0;
         else
