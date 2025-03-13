@@ -4,8 +4,10 @@ function [31:0] fibonacci;
     integer i;
     reg [31:0] a, b, temp;
     begin
-        // Comprobación básica para n = 0
-        if (n == 0) begin
+        // Comprobación básica para n < 0
+        if (n < 0) begin
+            fibonacci = 32'bx; // Valor indeterminado en caso de entrada negativa
+        end else if (n == 0) begin
             fibonacci = 0; // Fibonacci(0) es 0
         end else if (n == 1) begin
             fibonacci = 1; // Fibonacci(1) es 1
