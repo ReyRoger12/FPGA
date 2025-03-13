@@ -1,87 +1,90 @@
-module ALU_Controller;
-    import "DPI-C" function integer $fopen(string);
-    import "DPI-C" function integer $fscanf(integer, string, output integer);
-    import "DPI-C" function void $fclose(integer);
-
-    reg [31:0] A, B, Result;
-    reg [4:0]  M;
-    integer file, status;
-    
-    initial begin
-        file = $fopen("Comandos.txt", "r");
-        if (file == 0) begin
-            $display("Error: No se pudo abrir el archivo");
-            $finish;
-        end
-        
-        while (!$feof(file)) begin
-            status = $fscanf(file, "%d %d %d", M, A, B);
-            if (status != 3) break;
-            
-            case (M)
-                0:  Result = A + B;
-                1:  Result = A - B;
-                2:  Result = B - A;
-                3:  Result = A & B;
-                4:  Result = A | B;
-                5:  Result = A ^ B;
-                6:  Result = ~A;
-                7:  Result = ~B;
-                8:  Result = A * B;
-                9:  Result = (B != 0) ? (A / B) : 32'hFFFFFFFF;
-                10: Result = A << 1;
-                14: Result = fibonacci(A);
-                15: Result = factorial(A);
-                16: Result = potencia(A, B);
-                17: Result = (B != 0) ? (A % B) : 0;
-                18: Result = raiz(A);
-                default: Result = 32'hDEADBEEF;
-            endcase
-            
-            $display("M=%d, A=%d, B=%d -> Resultado=%d", M, A, B, Result);
-        end
-        
-        $fclose(file);
-        $finish;
+module ALU (
+    input  logic [31:0] A,      // Primer operando
+    input  logic [31:0] B,      // Segundo operando
+    input  logic [4:0]  M,      // Código de operación (de 0 a 18)
+    output logic [31:0] result  // Resultado de la operación
+);
+    always_comb begin
+        case (M)
+            5'd0:  result = A + B;       // Suma
+            5'd1:  result = A - B;       // Resta A - B
+            5'd2:  result = B - A;       // Resta B - A
+            5'd3:  result = A & B;       // AND lógico
+            5'd4:  result = A | B;       // OR lógico
+            5'd5:  result = A ^ B;       // XOR lógico
+            5'd6:  result = ~A;          // NOT A
+            5'd7:  result = ~B;          // NOT B
+            5'd8:  result = A * B;       // Multiplicación
+            5'd9:  result = (B != 0) ? A / B : 32'hFFFFFFFF; // División (con control de división por 0)
+            5'd10: result = A << 1;      // Desplazamiento a la izquierda
+            5'd14: result = fibonacci(A); // Fibonacci
+            5'd15: result = factorial(A); // Factorial
+            5'd16: result = potencia(A, B); // Potencia A^B
+            5'd17: result = (B != 0) ? A % B : 32'hFFFFFFFF; // Módulo (con control de división por 0)
+            5'd18: result = raizCuadrada(A); // Raíz cuadrada
+            default: result = 0;
+        endcase
     end
-    
-    function automatic reg [31:0] fibonacci(input reg [31:0] n);
-        reg [31:0] a, b, temp;
-        a = 0; b = 1;
+
+    // Función para calcular Fibonacci de forma recursiva
+    function automatic logic [31:0] fibonacci(input logic [31:0] n);
         if (n == 0) return 0;
-        for (integer i = 2; i <= n; i = i + 1) begin
-            temp = a + b;
-            a = b;
-            b = temp;
+        else if (n == 1) return 1;
+        else return fibonacci(n - 1) + fibonacci(n - 2);
+    endfunction
+
+    // Función para calcular factorial
+    function automatic logic [31:0] factorial(input logic [31:0] n);
+        logic [31:0] i, res;
+        res = 1;
+        for (i = 1; i <= n; i = i + 1) begin
+            res = res * i;
         end
-        return b;
+        return res;
     endfunction
-    
-    function automatic reg [31:0] factorial(input reg [31:0] n);
-        reg [31:0] result;
-        result = 1;
-        for (integer i = 2; i <= n; i = i + 1)
-            result = result * i;
-        return result;
+
+    // Función para calcular potencia A^B
+    function automatic logic [31:0] potencia(input logic [31:0] base, input logic [31:0] exp);
+        logic [31:0] res;
+        res = 1;
+        while (exp > 0) begin
+            res = res * base;
+            exp = exp - 1;
+        end
+        return res;
     endfunction
-    
-    function automatic reg [31:0] potencia(input reg [31:0] base, input reg [31:0] exp);
-        reg [31:0] result;
-        result = 1;
-        for (integer i = 0; i < exp; i = i + 1)
-            result = result * base;
-        return result;
-    endfunction
-    
-    function automatic reg [31:0] raiz(input reg [31:0] n);
-        reg [31:0] res, odd;
-        res = 0; odd = 1;
-        while (n >= odd) begin
-            n = n - odd;
-            odd = odd + 2;
+
+    // Función para calcular la raíz cuadrada usando sumas sucesivas
+    function automatic logic [31:0] raizCuadrada(input logic [31:0] n);
+        logic [31:0] res, impar;
+        res = 0;
+        impar = 1;
+        while (n >= impar) begin
+            n = n - impar;
+            impar = impar + 2;
             res = res + 1;
         end
         return res;
     endfunction
 endmodule
+
+// Módulo para leer el código de operación desde un archivo "Comandos.txt"
+module FileReader;
+    int file;
+    int M;
+    
+    initial begin
+        file = $fopen("Comandos.txt", "r");
+        if (file) begin
+            while (!$feof(file)) begin
+                $fscanf(file, "%d\n", M);
+                $display("Código de operación leído: %d", M);
+            end
+            $fclose(file);
+        end else begin
+            $display("Error: No se pudo abrir el archivo.");
+        end
+    end
+endmodule
+
 
