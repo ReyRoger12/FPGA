@@ -1,0 +1,16 @@
+-d C:\Gowin\Gowin_V1.9.9.02_x64\IDE\bin\Documents\RISC_V_LIB_S6B\impl\gwsynthesis\RISC_V_LIB_S6B.vg
+-p GW1NR-9C-QFN88P-6
+-pn GW1NR-LV9QN88PC6/I5
+-cst C:\Gowin\Gowin_V1.9.9.02_x64\IDE\bin\Documents\RISC_V_LIB_S6B\src\RISC_V_LIB_S6B.cst
+-cfg C:\Gowin\Gowin_V1.9.9.02_x64\IDE\bin\Documents\RISC_V_LIB_S6B\impl\pnr\device.cfg
+-bit
+-tr
+-ph
+-timing
+-cst_error
+-convert_sdp32_36_to_sdp16_18
+-place_option 0
+-route_option 0
+-correct_hold 1
+-route_maxfan 23
+-global_freq 50.000

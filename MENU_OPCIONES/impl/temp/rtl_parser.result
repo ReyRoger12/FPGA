@@ -1,0 +1,146 @@
+[
+ {
+  "InstFile" : "C:/Users/PREDATOR/Documents/RISC_V_LIB_S6B/RISC_V_LIB_S6B/src/RISC_V_S6B.sv",
+  "InstLine" : 1,
+  "InstName" : "top",
+  "ModuleFile" : "C:/Users/PREDATOR/Documents/RISC_V_LIB_S6B/RISC_V_LIB_S6B/src/RISC_V_S6B.sv",
+  "ModuleLine" : 1,
+  "ModuleName" : "top",
+  "SubInsts" : [
+   {
+    "InstFile" : "C:/Users/PREDATOR/Documents/RISC_V_LIB_S6B/RISC_V_LIB_S6B/src/RISC_V_S6B.sv",
+    "InstLine" : 8,
+    "InstName" : "rvsingle",
+    "ModuleFile" : "C:/Users/PREDATOR/Documents/RISC_V_LIB_S6B/RISC_V_LIB_S6B/src/RISC_V_S6B.sv",
+    "ModuleLine" : 15,
+    "ModuleName" : "riscvsingle",
+    "SubInsts" : [
+     {
+      "InstFile" : "C:/Users/PREDATOR/Documents/RISC_V_LIB_S6B/RISC_V_LIB_S6B/src/RISC_V_S6B.sv",
+      "InstLine" : 24,
+      "InstName" : "c",
+      "ModuleFile" : "C:/Users/PREDATOR/Documents/RISC_V_LIB_S6B/RISC_V_LIB_S6B/src/RISC_V_S6B.sv",
+      "ModuleLine" : 127,
+      "ModuleName" : "controller",
+      "SubInsts" : [
+       {
+        "InstFile" : "C:/Users/PREDATOR/Documents/RISC_V_LIB_S6B/RISC_V_LIB_S6B/src/RISC_V_S6B.sv",
+        "InstLine" : 139,
+        "InstName" : "md",
+        "ModuleFile" : "C:/Users/PREDATOR/Documents/RISC_V_LIB_S6B/RISC_V_LIB_S6B/src/RISC_V_S6B.sv",
+        "ModuleLine" : 166,
+        "ModuleName" : "maindec"
+       },
+       {
+        "InstFile" : "C:/Users/PREDATOR/Documents/RISC_V_LIB_S6B/RISC_V_LIB_S6B/src/RISC_V_S6B.sv",
+        "InstLine" : 140,
+        "InstName" : "ad",
+        "ModuleFile" : "C:/Users/PREDATOR/Documents/RISC_V_LIB_S6B/RISC_V_LIB_S6B/src/RISC_V_S6B.sv",
+        "ModuleLine" : 143,
+        "ModuleName" : "aludec"
+       }
+      ]
+     },
+     {
+      "InstFile" : "C:/Users/PREDATOR/Documents/RISC_V_LIB_S6B/RISC_V_LIB_S6B/src/RISC_V_S6B.sv",
+      "InstLine" : 25,
+      "InstName" : "dp",
+      "ModuleFile" : "C:/Users/PREDATOR/Documents/RISC_V_LIB_S6B/RISC_V_LIB_S6B/src/RISC_V_S6B.sv",
+      "ModuleLine" : 27,
+      "ModuleName" : "datapath",
+      "SubInsts" : [
+       {
+        "InstFile" : "C:/Users/PREDATOR/Documents/RISC_V_LIB_S6B/RISC_V_LIB_S6B/src/RISC_V_S6B.sv",
+        "InstLine" : 43,
+        "InstName" : "pcreg",
+        "ModuleFile" : "C:/Users/PREDATOR/Documents/RISC_V_LIB_S6B/RISC_V_LIB_S6B/src/RISC_V_S6B.sv",
+        "ModuleLine" : 96,
+        "ModuleName" : "flopr"
+       },
+       {
+        "InstFile" : "C:/Users/PREDATOR/Documents/RISC_V_LIB_S6B/RISC_V_LIB_S6B/src/RISC_V_S6B.sv",
+        "InstLine" : 44,
+        "InstName" : "pcadd4",
+        "ModuleFile" : "C:/Users/PREDATOR/Documents/RISC_V_LIB_S6B/RISC_V_LIB_S6B/src/RISC_V_S6B.sv",
+        "ModuleLine" : 104,
+        "ModuleName" : "adder"
+       },
+       {
+        "InstFile" : "C:/Users/PREDATOR/Documents/RISC_V_LIB_S6B/RISC_V_LIB_S6B/src/RISC_V_S6B.sv",
+        "InstLine" : 45,
+        "InstName" : "pcaddbranch",
+        "ModuleFile" : "C:/Users/PREDATOR/Documents/RISC_V_LIB_S6B/RISC_V_LIB_S6B/src/RISC_V_S6B.sv",
+        "ModuleLine" : 104,
+        "ModuleName" : "adder"
+       },
+       {
+        "InstFile" : "C:/Users/PREDATOR/Documents/RISC_V_LIB_S6B/RISC_V_LIB_S6B/src/RISC_V_S6B.sv",
+        "InstLine" : 46,
+        "InstName" : "pcmux",
+        "ModuleFile" : "C:/Users/PREDATOR/Documents/RISC_V_LIB_S6B/RISC_V_LIB_S6B/src/RISC_V_S6B.sv",
+        "ModuleLine" : 90,
+        "ModuleName" : "mux2"
+       },
+       {
+        "InstFile" : "C:/Users/PREDATOR/Documents/RISC_V_LIB_S6B/RISC_V_LIB_S6B/src/RISC_V_S6B.sv",
+        "InstLine" : 48,
+        "InstName" : "rf",
+        "ModuleFile" : "C:/Users/PREDATOR/Documents/RISC_V_LIB_S6B/RISC_V_LIB_S6B/src/RISC_V_S6B.sv",
+        "ModuleLine" : 69,
+        "ModuleName" : "regfile"
+       },
+       {
+        "InstFile" : "C:/Users/PREDATOR/Documents/RISC_V_LIB_S6B/RISC_V_LIB_S6B/src/RISC_V_S6B.sv",
+        "InstLine" : 49,
+        "InstName" : "ext",
+        "ModuleFile" : "C:/Users/PREDATOR/Documents/RISC_V_LIB_S6B/RISC_V_LIB_S6B/src/RISC_V_S6B.sv",
+        "ModuleLine" : 108,
+        "ModuleName" : "extend"
+       },
+       {
+        "InstFile" : "C:/Users/PREDATOR/Documents/RISC_V_LIB_S6B/RISC_V_LIB_S6B/src/RISC_V_S6B.sv",
+        "InstLine" : 51,
+        "InstName" : "srcbmux",
+        "ModuleFile" : "C:/Users/PREDATOR/Documents/RISC_V_LIB_S6B/RISC_V_LIB_S6B/src/RISC_V_S6B.sv",
+        "ModuleLine" : 90,
+        "ModuleName" : "mux2"
+       },
+       {
+        "InstFile" : "C:/Users/PREDATOR/Documents/RISC_V_LIB_S6B/RISC_V_LIB_S6B/src/RISC_V_S6B.sv",
+        "InstLine" : 52,
+        "InstName" : "alu",
+        "ModuleFile" : "C:/Users/PREDATOR/Documents/RISC_V_LIB_S6B/RISC_V_LIB_S6B/src/RISC_V_S6B.sv",
+        "ModuleLine" : 55,
+        "ModuleName" : "alu"
+       },
+       {
+        "InstFile" : "C:/Users/PREDATOR/Documents/RISC_V_LIB_S6B/RISC_V_LIB_S6B/src/RISC_V_S6B.sv",
+        "InstLine" : 53,
+        "InstName" : "resultmux",
+        "ModuleFile" : "C:/Users/PREDATOR/Documents/RISC_V_LIB_S6B/RISC_V_LIB_S6B/src/RISC_V_S6B.sv",
+        "ModuleLine" : 84,
+        "ModuleName" : "mux3"
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "InstFile" : "C:/Users/PREDATOR/Documents/RISC_V_LIB_S6B/RISC_V_LIB_S6B/src/RISC_V_S6B.sv",
+    "InstLine" : 9,
+    "InstName" : "imem",
+    "ModuleFile" : "C:/Users/PREDATOR/Documents/RISC_V_LIB_S6B/RISC_V_LIB_S6B/src/RISC_V_S6B.sv",
+    "ModuleLine" : 205,
+    "ModuleName" : "imem"
+   },
+   {
+    "InstFile" : "C:/Users/PREDATOR/Documents/RISC_V_LIB_S6B/RISC_V_LIB_S6B/src/RISC_V_S6B.sv",
+    "InstLine" : 10,
+    "InstName" : "dmem",
+    "ModuleFile" : "C:/Users/PREDATOR/Documents/RISC_V_LIB_S6B/RISC_V_LIB_S6B/src/RISC_V_S6B.sv",
+    "ModuleLine" : 188,
+    "ModuleName" : "dmem"
+   }
+  ]
+ }
+]
