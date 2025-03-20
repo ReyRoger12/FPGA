@@ -1,0 +1,257 @@
+.global _boot
+.text
+ 
+_boot:                    /* x0  = 0    0x000 */
+ini:
+lw x8,88(x0)  /*lee M*/
+    
+addi x9,x0,0
+    beq x8,x9,suma
+    
+    addi x9,x0,1
+    beq x8,x9,restaAB
+    
+    addi x9,x0,2
+    beq x8,x9,restaBA
+    
+    addi x9,x0,3
+    beq x8,x9,andAB
+    
+    addi x9,x0,4
+    beq x8,x9,orAB
+    
+    addi x9,x0,5
+    beq x8,x9,xorAB
+    
+    addi x9,x0,6
+    beq x8,x9,notA
+    
+    addi x9,x0,7
+    beq x8,x9,notB
+    
+    addi x9,x0,8
+    beq x8,x9,multi
+    
+    addi x9,x0,9
+    beq x8,x9,div
+    
+    addi x9,x0,10
+    beq x8,x9,desIzq
+    
+    addi x9,x0,14
+    beq x8,x9,fib
+    
+    addi x9,x0,15
+    beq x8,x9,fact
+    
+    
+suma:
+addi x10,x0,0x3F
+lw x4,96(x0) /*lee A   x4=A*/
+lw x5,92(x0) /*lee B  x5=B*/
+    add x3,x4,x5  /*suma A+B  x3= A+B*/
+sub x3,x10,x3 /*NOT x3*/
+sw x3,100(x0) /*envìa el resultado a leds*/
+    jal x0,ini
+    
+restaAB:
+addi x10,x0,0x3F
+lw x4,96(x0) /*lee A   x4=A*/
+lw x5,92(x0) /*lee B  x5=B*/
+    sub x6, x4, x5 /*Resta A - B*/
+    sub x6,x10,x6 /*NOT x3*/
+    sw x6,100(x0) /*envìa el resultado a leds*/
+    jal x0,ini
+    
+restaBA:
+addi x10,x0,0x3F
+lw x4,96(x0) /*lee A   x4=A*/
+lw x5,92(x0) /*lee B  x5=B*/
+    sub x7, x5, x4 /*Resta B - A*/
+    sub x7,x10,x7 /*NOT x3*/
+    sw x7,100(x0) /*envìa el resultado a leds*/
+    jal x0,ini
+ 
+andAB:
+addi x10,x0,0x3F
+lw x4,96(x0) /*lee A   x4=A*/
+lw x5,92(x0) /*lee B  x5=B*/
+    and x11, x4, x5
+    sub x11,x10,x11 /*NOT x3*/
+    sw x11,100(x0) /*envìa el resultado a leds*/
+    jal x0,ini
+    
+orAB:
+addi x10,x0,0x3F
+lw x4,96(x0) /*lee A   x4=A*/
+lw x5,92(x0) /*lee B  x5=B*/
+or x12, x4, x5
+    sub x12,x10,x12 /*NOT x3*/
+    sw x12,100(x0) /*envìa el resultado a leds*/
+    jal x0,ini
+    
+xorAB:
+addi x10,x0,0x3F
+lw x4,96(x0) /*lee A   x4=A*/
+lw x5,92(x0) /*lee B  x5=B*/
+    and x13, x4, x5 /*and*/
+    sub x13, x10, x13 /*not*/
+    or x14, x4, x5
+    and x15, x14, x13
+    sub x15,x10,x15 /*NOT x3*/
+    sw x15,100(x0) /*envìa el resultado a leds*/
+    jal x0,ini
+    
+notA:
+addi x10,x0,0x3F
+lw x4,96(x0) /*lee A   x4=A*/
+    sw x4,100(x0) /*envìa el resultado a leds*/
+    jal x0,ini
+    
+    
+notB:
+addi x10,x0,0x3F
+lw x5,92(x0) /*lee A   x4=A*/
+    sw x5,100(x0) /*envìa el resultado a leds*/
+    jal x0,ini
+    
+multi:
+    lw   x4, 96(x0)         /* Carga A desde memoria */
+    lw   x5, 92(x0)         /* Carga B (número de bits de desplazamiento) */
+addi x17, x0, 0x0
+    addi x16, x5, 0x0
+    jal x0, multiBucle
+    
+multiBucle:
+beq x16, x0, finMulti
+    add x17, x17, x4
+    addi x16, x16, 0x-1
+    jal x0, multiBucle
+    
+finMulti:
+addi x10,x0,0x3F
+sub x17,x10,x17 /*NOT x3*/
+sw x17,100(x0) /*envìa el resultado a leds*/
+    jal x0,ini
+    
+div:
+    lw x4,96(x0)          # lee A desde memoria
+    lw x5,92(x0)          # lee B desde memoria
+    addi x18,x0,0x0        # inicializa el cociente (x18 = 0)
+    addi x19,x4,0x0        # copia del dividendo en x19 (x19 = A)
+    jal x0, divBucle
+ 
+divBucle:
+    beq x19,x0, finDiv    # si el dividendo llega a 0, terminamos (división exacta)
+    sub x19,x19,x5        # restamos el divisor
+    addi x18,x18,0x1      # incrementamos el cociente
+    jal x0, divBucle
+ 
+finDiv:
+    addi x10,x0,0x3F
+    sub x18,x10,x18       # operación de NOT, según tu mapeo a LEDs
+    sw x18,100(x0)        # envía el resultado a los LEDs
+    jal x0,ini
+    
+desIzq:
+    lw   x4, 96(x0)         /* Carga A desde memoria */
+    lw   x5, 92(x0)         /* Carga B (número de bits de desplazamiento) */
+    add  x20, x4, x0        /* Inicializa x17 con A (resultado) */
+    jal x0, desIzqCiclo
+ 
+desIzqCiclo:
+    beq  x5, x0, desIzqFin /* Si B es 0, terminamos el bucle */
+    add  x20, x20, x20      /* Duplica el valor en x17 (desplaza 1 bit a la izquierda) */
+    addi x5, x5, -1        /* Decrementa el contador de bits */
+    jal  x0, desIzqCiclo       /* Repite el bucle */
+ 
+desIzqFin:
+    addi x10, x0, 0x3F      
+    sub  x20, x10, x20      /* Aplica NOT al resultado (según mapeo a LEDs) */
+    sw   x20, 100(x0)       /* Envía el resultado a los LEDs */
+    jal  x0, ini            /* Regresa a la rutina de inicio */
+    
+fib:
+    lw   x4, 96(x0)        # x4 = n (número de término a calcular)
+    addi x10, x0, 0x3F      # x10 = 0x3F (constante para transformación de salida)
+ 
+    beq  x4, x0, fib0      # Si n == 0, ir a fib0
+    addi x21, x0, 1         # x21 = 1
+    beq  x4, x21, fib1      # Si n == 1, ir a fib1
+ 
+    # Inicialización para n >= 2
+    addi x22, x0, 0         # x22 = fib0 = 0
+    addi x23, x0, 1         # x23 = fib1 = 1
+    addi x24, x0, 2         # x24 = contador = 2
+ 
+fibLoop:
+    # Comprobamos si contador > n (si n < contador)
+    slt  x21, x4, x24        # x21 = 1 si n < contador, 0 en otro caso
+    beq  x21, x0, fibContinue  # Si x21 == 0 (n >= contador), continuamos el bucle
+    jal  x0, fibFinish     # Si x21 != 0, terminamos la iteración
+ 
+fibContinue:
+    add  x24, x22, x23        # x25 = fib0 + fib1 (nuevo término)
+    add  x22, x23, x0        # Actualiza fib0 = fib1
+    add  x23, x25, x0        # Actualiza fib1 = nuevo término
+    addi x24, x24, 1         # Incrementa el contador
+    jal  x0, fibLoop       # Repite el bucle
+ 
+fibFinish:
+    # x23 contiene el n-ésimo término de Fibonacci
+    sub  x23, x10, x23       # Se aplica la transformación para LEDs: 0x3F - fib(n)
+    sw   x23, 100(x0)       # Se escribe el resultado en la dirección de los LEDs
+    jal  x0, ini          # Vuelve a la rutina de inicio
+ 
+fib0:
+    # Si n == 0, se retorna 0 (0x3F - 0 = 0x3F)
+    sw   x10, 100(x0)      # Escribe 0x3F en LEDs
+    jal  x0, ini
+ 
+fib1:
+    # Si n == 1, se retorna 1 (0x3F - 1)
+    addi x26, x0, 1        # x26 = 1
+    sub  x26, x10, x26     # x26 = 0x3F - 1
+    sw   x26, 100(x0)      # Escribe el resultado en LEDs
+    jal  x0, ini
+    
+fact:                   # Entrada a la rutina de factorial
+    lw   x20, 96(x0)    # Carga A en x20 (valor máximo del bucle)
+    addi x3, x0, 1      # x3 = factorial acumulado, se inicializa en 1
+    addi x6, x0, 1      # x6 = contador (i), empieza en 1
+    beq  x20, x0, factFinish  # Si A == 0, se salta el bucle (0! = 1)
+ 
+fact_loop:
+    # Si el contador i es mayor que A, terminamos
+    slt  x7, x20, x6    # x7 = 1 si A < i
+    beq  x7, x0, fact_continue  # Si A >= i, continuamos
+    jal  x0, factFinish         # Si A < i, terminamos el bucle
+ 
+fact_continue:
+    # Se quiere calcular: factorial = factorial * i
+    # Se implementa la multiplicación por sumas iterativas:
+    addi x17, x0, 0    # x17 será el acumulador para el producto, se inicializa en 0
+    addi x16, x6, 0    # x16 es el contador para la multiplicación; x16 = i
+ 
+mul_loop:
+    beq  x16, x0, mul_done  # Si x16 llega a 0, se terminó la suma
+    add  x17, x17, x3       # x17 = x17 + factorial (x3)
+    addi x16, x16, -1       # Decrementa el contador de la multiplicación
+    jal  x0, mul_loop       # Repite el bucle
+ 
+mul_done:
+    add  x3, x17, x0        # Actualiza el factorial con el producto calculado
+    addi x6, x6, 1         # Incrementa el contador i (i = i + 1)
+    jal  x0, fact_loop      # Vuelve al inicio del bucle para el siguiente i
+ 
+factFinish:
+addi x10,x0,0x3F
+sub x3,x10,x3 /*NOT x3*/
+    sw   x3, 100(x0)        # Guarda el factorial en la dirección 100(x0) (mapeado a LEDs)
+    jal  x0, ini            # Vuelve a la rutina de inicio (ini)
+ 
+ 
+ 
+.data
+variable:
+.word 0xdeadbeef
