@@ -1,4 +1,4 @@
-ini:
+ ini:
 		lw x4, 96(x0)    # Cargar A 
         lw x5, 92(x0)    # Cargar B 
         lw x6, 88(x0)    # Cargar M 
